@@ -28,3 +28,19 @@ fi
 if [ -f ~/.bashrc ]; then
     . ~/.bashrc
 fi
+
+function setsshkey {
+
+    if [[ -z "$1" ]]; then
+        
+        read -rp "Enter a new ssh key: " SSH_KEY
+    
+    elif [[ -n "$1" ]]; then
+
+        SSH_KEY=$1
+    fi
+
+    KEYTOREPLACE=$(grep "export SSH_KEY=" "${SSH_ENV}")
+
+    sed -i "s/${KEYTOREPLACE}/export SSH_KEY=${SSH_KEY}/" "$SSH_ENV"
+}
