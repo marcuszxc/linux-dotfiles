@@ -45,7 +45,7 @@ function setsshkey {
         SSH_KEY=$1
     fi
 
-    KEYTOREPLACE=$(grep "export SSH_KEY=" "${SSH_ENV}")
+    rm "${SSH_ENV}"
 
-    sed -i "s/${KEYTOREPLACE}/export SSH_KEY=${SSH_KEY}/" "$SSH_ENV"
+    start_agent
 }
