@@ -2,7 +2,12 @@ SSH_ENV="$HOME/.ssh/agent-environment"
 
 function start_agent {
     echo "Initialising new SSH agent..."
-    VAR_SSH_ENV="$(/usr/bin/ssh-agent) export SSH_KEY=id_vmkey"
+    
+    if [[ -z $SSH_KEY ]]; then
+        SSH_KEY=id_vmkey
+    fi
+
+    VAR_SSH_ENV="$(/usr/bin/ssh-agent) export SSH_KEY=$SSH_KEY"
     VAR_SSH_ENV="${VAR_SSH_ENV//echo/#echo}"
     VAR_SSH_ENV="${VAR_SSH_ENV//export /export\|}"
     VAR_SSH_ENV="${VAR_SSH_ENV// Agent pid /\|Agent\|pid\|}"
