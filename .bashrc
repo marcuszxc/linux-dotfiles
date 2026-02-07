@@ -46,4 +46,30 @@ fi
 # We send the output to /dev/null to keep the terminal clean
 ssh-add -l &> /dev/null || start_agent
 
-. ~/.bash_aliases
+sys_update() {
+    # Variable to track if errors occur
+    local error=0
+
+    # CHECK 1: Use yay (covers Repos + AUR) if installed, otherwise pacman
+    if command -v yay &> /dev/null; then
+        echo "==> Detected yay. Updating System & AUR..."
+        # Note: Do not use sudo with yay; it asks when needed.
+        yay -Syu --noconfirm || error=1
+    else
+        echo "==> yay not found. Using pacman..."
+        sudo pacman -Syu --noconfirm || error=1
+    fi
+
+    # CHECK 2: Check for Flatpak
+    # Only run if previous step succeeded AND flatpak is installed
+    if [ $error -eq 0 ] && command -v flatpak &> /dev/null; then
+        echo "==> Detected Flatpak. Updating..."
+        flatpak update -y || error=1
+    fi
+
+    return $error
+}
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi

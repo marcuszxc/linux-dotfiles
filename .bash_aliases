@@ -1,4 +1,5 @@
-alias update='sudo pacman -Syu --noconfirm && flatpak update -y'
-alias update_poweroff='sudo pacman -Syu --noconfirm && flatpak update -y && poweroff'
+alias kdown='qdbus6 org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.saveCurrentSession && systemctl poweroff'
+alias update='sys_update'
+alias update_poweroff='sys_update && kdown'
 alias python='python3'
 alias ll='ls -la'
