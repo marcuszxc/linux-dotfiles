@@ -9,3 +9,12 @@ if not set -q SSH_AUTH_SOCK
 end
 
 set -gx SSH_ASKPASS /usr/bin/ksshaskpass
+
+if status is-interactive
+    # Check if the agent is empty
+    if not ssh-add -l > /dev/null 2>&1
+        # Add the key using the GUI prompt
+        # Replace 'id_ed25519' with your actual key filename if it's different
+        ssh-add ~/.ssh/id_ed25519 </dev/null > /dev/null 2>&1
+    end
+end
